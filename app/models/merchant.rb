@@ -7,7 +7,7 @@ class Merchant < ApplicationRecord
     # binding.pry
     InvoiceItem.joins(invoice: :transactions)
                 .where(invoices: {merchant_id: self.id})
-                .where(transactions: {result: "success"})
+                .merge(Transaction.successful)
                 .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
