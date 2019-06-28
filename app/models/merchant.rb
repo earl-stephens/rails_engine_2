@@ -3,12 +3,30 @@ class Merchant < ApplicationRecord
   has_many :invoices
   has_many :items
 
-  def revenue
+  def revenue(date = nil)
+    # binding.pry
+    if date == nil
+      get_revenue
+    else
+      get_revenue_by_date(date)
+    end
+  end
+
+  def get_revenue_by_date(date)
+    formatted_date = format(date)
     # binding.pry
     InvoiceItem.joins(invoice: :transactions)
-                .where(invoices: {merchant_id: self.id})
-                .merge(Transaction.successful)
-                .sum("invoice_items.quantity * invoice_items.unit_price")
+    .where(invoices: {merchant_id: self.id})
+    .where(invoices: {created_at: formatted_date})
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def get_revenue
+    InvoiceItem.joins(invoice: :transactions)
+    .where(invoices: {merchant_id: self.id})
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
   def favorite_customer(id)
@@ -19,6 +37,10 @@ class Merchant < ApplicationRecord
             .group(:id)
             .order("total_count desc")
             .limit(1)
+  end
+
+  def format(date)
+      DateTime.parse(date).all_day
   end
 
 end
