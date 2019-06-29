@@ -14,4 +14,14 @@ class Item < ApplicationRecord
         .limit(quantity)
   end
 
+  def self.most_items(quantity)
+    # binding.pry
+    Item.joins(invoice_items: [invoice: :transactions])
+        .merge(Transaction.successful)
+        .select("items.*, sum(invoice_items.quantity) as total_count")
+        .group(:id)
+        .order("total_count desc")
+        .limit(quantity)
+  end
+
 end
