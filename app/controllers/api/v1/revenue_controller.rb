@@ -4,7 +4,9 @@ module Api
 
       def show
         merch_id = params[:merchant_id]
-        data = RevenueSerializer.new(merch_id).get_data
+        date = params[:date] if params[:date]
+        data = RevenueSerializer.new(merch_id, date).get_data
+        # binding.pry
         render json: data
       end
 
