@@ -4,7 +4,6 @@ class Merchant < ApplicationRecord
   has_many :items
 
   def revenue(date = nil)
-    # binding.pry
     if date == nil
       get_revenue
     else
@@ -14,7 +13,6 @@ class Merchant < ApplicationRecord
 
   def get_revenue_by_date(date)
     formatted_date = format(date)
-    # binding.pry
     InvoiceItem.joins(invoice: :transactions)
     .where(invoices: {merchant_id: self.id})
     .where(invoices: {created_at: formatted_date})
@@ -41,6 +39,15 @@ class Merchant < ApplicationRecord
 
   def format(date)
       DateTime.parse(date).all_day
+  end
+
+  def self.sort_by_revenue(quantity)
+    Merchant.joins(invoices: [:invoice_items, :transactions])
+            .merge(Transaction.successful)
+            .select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) as total_revenue")
+            .group(:id)
+            .order("total_revenue desc")
+            .limit(quantity)
   end
 
 end
