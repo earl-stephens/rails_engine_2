@@ -12,4 +12,9 @@ class Customer < ApplicationRecord
             .first
   end
 
+  def get_transactions
+    Transaction.joins(invoice: :customer)
+                .where(customers: {id: self.id})
+  end
+
 end
