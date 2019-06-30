@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       resources :items, only: [:index, :show] do
         get 'best_day', to: 'best_day#show'
         get '/invoice_items', to: 'item_invoice_items#show'
+        get '/merchant', to: 'item_merchant#show'
       end
       resources :invoices, only: [:index, :show]
       resources :transactions, only: [:index, :show] do
