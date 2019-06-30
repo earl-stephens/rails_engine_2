@@ -7,6 +7,7 @@ module Api
       end
 
       def show
+        # binding.pry
         render json: MerchantSerializer.new(Merchant.find(params[:id]))
       end
 
