@@ -21,7 +21,6 @@ RSpec.describe 'transaction', type: :request do
     get "/api/v1/transactions/#{transaction1.id}/invoice"
 
     results = JSON.parse(response.body)
-    binding.pry
 
     expect(response).to be_successful
     expect(results["data"]["type"]).to eq("invoice")
