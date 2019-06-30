@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       end
       resources :invoice_items, only: [:index, :show] do
         get '/invoice', to: 'invoice_item_invoices#show'
+        get '/item', to: 'invoice_item_items#show'
       end
     end
   end
