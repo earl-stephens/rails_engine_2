@@ -12,7 +12,7 @@ RSpec.describe 'invoice item multi finders', type: :request do
       updated_at: "2012-03-27T14:54:05.000Z"
     )
     item = Item.create!(name: "frog", description: "green", unit_price: 123, merchant_id: merchant.id)
-    @ii1 = InvoiceItem.create!(quantity: 25,
+    @ii1 = InvoiceItem.create!(quantity: 43,
                               unit_price: 223,
                               item_id: item.id,
                               invoice_id: invoice1.id,
@@ -25,7 +25,7 @@ RSpec.describe 'invoice item multi finders', type: :request do
                               created_at: "2012-03-27T14:54:05.000Z",
                               updated_at: "2012-03-27T14:54:05.000Z")
     @ii3 = InvoiceItem.create!(quantity: 86,
-                              unit_price: 58,
+                              unit_price: 223,
                               item_id: item.id,
                               invoice_id: invoice1.id,
                               created_at: "2012-03-27T14:54:05.000Z",
@@ -72,5 +72,19 @@ RSpec.describe 'invoice item multi finders', type: :request do
     expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.11")
     expect(results["data"][2]["attributes"]["item_id"]).to eq(@ii3.item_id)
     expect(results["data"][2]["attributes"]["invoice_id"]).to eq(@ii3.invoice_id)
+  end
+
+  it "finds invoice items by quantity" do
+    get "/api/v1/invoice_items/find_all?quantity=#{@ii1.quantity}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@ii1.id}")
+    expect(results["data"][1]["attributes"]["quantity"]).to eq(@ii2.quantity)
+    expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.11")
+    expect(results["data"][0]["attributes"]["item_id"]).to eq(@ii2.item_id)
+    expect(results["data"][0]["attributes"]["invoice_id"]).to eq(@ii2.invoice_id)
   end
 end
