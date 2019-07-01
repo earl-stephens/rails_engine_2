@@ -21,6 +21,6 @@ RSpec.describe 'invoice items', type: :request do
     expect(results["data"]["attributes"]["name"]).to eq(item1.name)
     expect(results["data"]["attributes"]["id"]).to eq(item1.id)
     expect(results["data"]["attributes"]["description"]).to eq(item1.description)
-    expect(results["data"]["attributes"]["unit_price"]).to eq(item1.unit_price)
+    expect(results["data"]["attributes"]["unit_price"]).to eq("23.45")
   end
 end
