@@ -23,6 +23,9 @@ Rails.application.routes.draw do
       namespace :transactions do
         get '/find', to: 'search#show'
       end
+      namespace :customers do
+        get '/find', to: 'search#show'
+      end
       resources :merchants, only: [:index, :show] do
         get '/revenue', to: 'revenue#show'
         get '/favorite_customer', to: 'favorite_customers#show'
