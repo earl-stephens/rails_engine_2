@@ -36,4 +36,15 @@ RSpec.describe 'invoice single finders', type: :request do
     expect(results["data"]["attributes"]["customer_id"]).to eq(@invoice1.customer_id)
     expect(results["data"]["attributes"]["merchant_id"]).to eq(@invoice1.merchant_id)
   end
+  it "finds invoice by merchant_id" do
+    get "/api/v1/invoices/find?merchant_id=#{@invoice1.merchant_id}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@invoice1.id}")
+    expect(results["data"]["attributes"]["status"]).to eq(@invoice1.status)
+    expect(results["data"]["attributes"]["customer_id"]).to eq(@invoice1.customer_id)
+    expect(results["data"]["attributes"]["merchant_id"]).to eq(@invoice1.merchant_id)
+  end
 end
