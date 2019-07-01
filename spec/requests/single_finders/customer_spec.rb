@@ -51,4 +51,15 @@ RSpec.describe 'customer single finders', type: :request do
     expect(results["data"]["attributes"]["first_name"]).to eq(@customer1.first_name)
     expect(results["data"]["attributes"]["last_name"]).to eq(@customer1.last_name)
   end
+
+  it "finds customer by updated_at" do
+    get "/api/v1/customers/find?updated_at=#{@customer1.updated_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@customer1.id}")
+    expect(results["data"]["attributes"]["first_name"]).to eq(@customer1.first_name)
+    expect(results["data"]["attributes"]["last_name"]).to eq(@customer1.last_name)
+  end
 end
