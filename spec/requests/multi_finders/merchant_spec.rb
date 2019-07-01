@@ -22,4 +22,14 @@ RSpec.describe 'merchant multi finder', type: :request do
     expect(results["data"][0]["id"]).to eq("#{@merchant2.id}")
     expect(results["data"][0]["attributes"]["name"]).to eq(@merchant2.name)
   end
+
+  it "gets merchants by name" do
+    get "/api/v1/merchants/find_all?name=#{@merchant1.name}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"][0]["id"]).to eq("#{@merchant1.id}")
+    expect(results["data"][0]["attributes"]["name"]).to eq(@merchant1.name)
+  end
 end
