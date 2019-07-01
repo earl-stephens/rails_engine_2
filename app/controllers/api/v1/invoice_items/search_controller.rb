@@ -4,11 +4,21 @@ module Api
       class SearchController < ApplicationController
 
         def index
-          render json: InvoiceItemSerializer.new(InvoiceItem.where(invoice_item_params))
+          if invoice_item_params[:unit_price]
+            formatted_price = invoice_item_params[:unit_price].gsub('.', '')
+            render json: InvoiceItemSerializer.new(InvoiceItem.where(unit_price: formatted_price))
+          else
+            render json: InvoiceItemSerializer.new(InvoiceItem.where(invoice_item_params))
+          end
         end
 
         def show
-          render json: InvoiceItemSerializer.new(InvoiceItem.find_by(invoice_item_params))
+          if invoice_item_params[:unit_price]
+            formatted_price = invoice_item_params[:unit_price].gsub('.', '')
+            render json: InvoiceItemSerializer.new(InvoiceItem.find_by(unit_price: formatted_price))
+          else
+            render json: InvoiceItemSerializer.new(InvoiceItem.find_by(invoice_item_params))
+          end
         end
 
         private

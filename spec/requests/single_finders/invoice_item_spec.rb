@@ -73,7 +73,7 @@ RSpec.describe 'invoice item single finder', type: :request do
   end
 
   it "finds invoice item by unit_price" do
-    get "/api/v1/invoice_items/find?unit_price=#{@ii1.unit_price}"
+    get "/api/v1/invoice_items/find?unit_price=2.23"
 
     results = JSON.parse(response.body)
 
