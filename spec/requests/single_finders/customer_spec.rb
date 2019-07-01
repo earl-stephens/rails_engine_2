@@ -29,4 +29,15 @@ RSpec.describe 'customer single finders', type: :request do
     expect(results["data"]["attributes"]["first_name"]).to eq(@customer1.first_name)
     expect(results["data"]["attributes"]["last_name"]).to eq(@customer1.last_name)
   end
+
+  it "finds customer by last_name" do
+    get "/api/v1/customers/find?last_name=#{@customer1.last_name}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@customer1.id}")
+    expect(results["data"]["attributes"]["first_name"]).to eq(@customer1.first_name)
+    expect(results["data"]["attributes"]["last_name"]).to eq(@customer1.last_name)
+  end
 end
