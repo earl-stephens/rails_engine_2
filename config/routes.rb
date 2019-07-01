@@ -13,6 +13,9 @@ Rails.application.routes.draw do
         get '/random', to: 'random#index'
         get '/find', to: 'search#show'
       end
+      namespace :invoices do
+        get 'find', to: 'search#show'
+      end
       resources :merchants, only: [:index, :show] do
         get '/revenue', to: 'revenue#show'
         get '/favorite_customer', to: 'favorite_customers#show'
