@@ -1,0 +1,41 @@
+require "rails_helper"
+
+RSpec.describe 'invoice multi finders', type: :request do
+  before :each do
+    customer = Customer.create!(first_name: "Tasmanian", last_name: "Devil")
+    merchant = Merchant.create!(name: "Wile E. Coyote")
+    @invoice1 = Invoice.create!(
+      status: "shipped",
+      customer_id: customer.id,
+      merchant_id: merchant.id,
+      created_at: "2012-03-27T14:54:05.000Z",
+      updated_at: "2012-03-27T14:54:05.000Z"
+    )
+    @invoice2 = Invoice.create!(
+      status: "shipped",
+      customer_id: customer.id,
+      merchant_id: merchant.id,
+      created_at: "2012-03-27T14:54:05.000Z",
+      updated_at: "2012-03-27T14:54:05.000Z"
+    )
+    @invoice3 = Invoice.create!(
+      status: "shipped",
+      customer_id: customer.id,
+      merchant_id: merchant.id,
+      created_at: "2011-03-27T14:54:05.000Z",
+      updated_at: "2011-03-27T14:54:05.000Z"
+    )
+  end
+
+  it "finds invoices by id" do
+    get "/api/v1/invoices/find_all?id=#{@invoice2.id}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"][0]["id"]).to eq("#{@invoice2.id}")
+    expect(results["data"][0]["attributes"]["status"]).to eq(@invoice2.status)
+    expect(results["data"][0]["attributes"]["customer_id"]).to eq(@invoice2.customer_id)
+    expect(results["data"][0]["attributes"]["merchant_id"]).to eq(@invoice2.merchant_id)
+  end
+end
