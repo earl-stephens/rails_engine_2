@@ -39,4 +39,16 @@ RSpec.describe 'customer multi finder', type: :request do
     expect(results["data"][0]["attributes"]["first_name"]).to eq(@customer1.first_name)
     expect(results["data"][1]["attributes"]["last_name"]).to eq(@customer2.last_name)
   end
+
+  it "finds customer by last_name" do
+    get "/api/v1/customers/find_all?last_name=#{@customer2.last_name}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@customer2.id}")
+    expect(results["data"][0]["attributes"]["first_name"]).to eq(@customer2.first_name)
+    expect(results["data"][1]["attributes"]["last_name"]).to eq(@customer3.last_name)
+  end
 end
