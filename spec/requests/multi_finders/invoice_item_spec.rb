@@ -101,4 +101,32 @@ RSpec.describe 'invoice item multi finders', type: :request do
     expect(results["data"][0]["attributes"]["item_id"]).to eq(@ii1.item_id)
     expect(results["data"][0]["attributes"]["invoice_id"]).to eq(@ii1.invoice_id)
   end
+
+  it "finds invoice items by created_at" do
+    get "/api/v1/invoice_items/find_all?created_at=#{@ii2.created_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@ii2.id}")
+    expect(results["data"][1]["attributes"]["quantity"]).to eq(@ii3.quantity)
+    expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.23")
+    expect(results["data"][0]["attributes"]["item_id"]).to eq(@ii2.item_id)
+    expect(results["data"][0]["attributes"]["invoice_id"]).to eq(@ii2.invoice_id)
+  end
+
+  it "finds invoice items by updated_at" do
+    get "/api/v1/invoice_items/find_all?updated_at=#{@ii2.updated_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@ii2.id}")
+    expect(results["data"][1]["attributes"]["quantity"]).to eq(@ii3.quantity)
+    expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.23")
+    expect(results["data"][0]["attributes"]["item_id"]).to eq(@ii2.item_id)
+    expect(results["data"][0]["attributes"]["invoice_id"]).to eq(@ii2.invoice_id)
+  end
 end
