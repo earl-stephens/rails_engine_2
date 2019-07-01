@@ -64,6 +64,7 @@ RSpec.describe 'invoice multi finders', type: :request do
     expect(results["data"][1]["attributes"]["customer_id"]).to eq(@invoice2.customer_id)
     expect(results["data"][2]["attributes"]["merchant_id"]).to eq(@invoice3.merchant_id)
   end
+
   it "finds invoices by status" do
     get "/api/v1/invoices/find_all?status=#{@invoice3.status}"
 
@@ -75,5 +76,18 @@ RSpec.describe 'invoice multi finders', type: :request do
     expect(results["data"][0]["attributes"]["status"]).to eq(@invoice1.status)
     expect(results["data"][0]["attributes"]["customer_id"]).to eq(@invoice1.customer_id)
     expect(results["data"][2]["attributes"]["merchant_id"]).to eq(@invoice3.merchant_id)
+  end
+
+  it "finds invoices by created_at" do
+    get "/api/v1/invoices/find_all?created_at=#{@invoice2.created_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][1]["id"]).to eq("#{@invoice2.id}")
+    expect(results["data"][0]["attributes"]["status"]).to eq(@invoice1.status)
+    expect(results["data"][0]["attributes"]["customer_id"]).to eq(@invoice1.customer_id)
+    expect(results["data"][1]["attributes"]["merchant_id"]).to eq(@invoice2.merchant_id)
   end
 end
