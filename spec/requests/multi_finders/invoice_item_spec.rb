@@ -59,4 +59,18 @@ RSpec.describe 'invoice item multi finders', type: :request do
     expect(results["data"][2]["attributes"]["item_id"]).to eq(@ii3.item_id)
     expect(results["data"][2]["attributes"]["invoice_id"]).to eq(@ii3.invoice_id)
   end
+
+  it "finds invoice items by invoice_id" do
+    get "/api/v1/invoice_items/find_all?invoice_id=#{@ii1.invoice_id}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(3)
+    expect(results["data"][0]["id"]).to eq("#{@ii1.id}")
+    expect(results["data"][1]["attributes"]["quantity"]).to eq(@ii2.quantity)
+    expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.11")
+    expect(results["data"][2]["attributes"]["item_id"]).to eq(@ii3.item_id)
+    expect(results["data"][2]["attributes"]["invoice_id"]).to eq(@ii3.invoice_id)
+  end
 end
