@@ -1,0 +1,37 @@
+require "rails_helper"
+
+RSpec.describe 'item multi finders', type: :request do
+  before :each do
+    merchant = Merchant.create!(name: "Wile E. Coyote")
+    @item1 = Item.create!(name: "frog",
+                        description: "green",
+                        unit_price: 123,
+                        merchant_id: merchant.id,
+                        created_at: "2012-03-27T14:54:05.000Z",
+                        updated_at: "2012-03-27T14:54:05.000Z")
+    @item2 = Item.create!(name: "pig",
+                        description: "pink",
+                        unit_price: 234,
+                        merchant_id: merchant.id,
+                        created_at: "2012-03-27T14:54:05.000Z",
+                        updated_at: "2012-03-27T14:54:05.000Z")
+    @item3 = Item.create!(name: "bear",
+                        description: "brown",
+                        unit_price: 234,
+                        merchant_id: merchant.id,
+                        created_at: "2011-03-27T14:54:05.000Z",
+                        updated_at: "2011-03-27T14:54:05.000Z")
+  end
+
+  it "finds items by id" do
+    get "/api/v1/items/find_all?id=#{@item1.id}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"][0]["id"]).to eq("#{@item1.id}")
+    expect(results["data"][0]["attributes"]["description"]).to eq(@item1.description)
+    expect(results["data"][0]["attributes"]["unit_price"]).to eq("1.23")
+    expect(results["data"][0]["attributes"]["merchant_id"]).to eq(@item1.merchant_id)
+  end
+end
