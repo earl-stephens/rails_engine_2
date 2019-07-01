@@ -63,4 +63,17 @@ RSpec.describe 'transaction multi finder', type: :request do
     expect(results["data"][1]["attributes"]["credit_card_number"]).to eq(@transaction2.credit_card_number)
     expect(results["data"][1]["attributes"]["result"]).to eq(@transaction2.result)
   end
+
+  it "finds transactions by result" do
+    get "/api/v1/transactions/find_all?result=#{@transaction2.result}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@transaction2.id}")
+    expect(results["data"][0]["attributes"]["invoice_id"]).to eq(@transaction2.invoice_id)
+    expect(results["data"][1]["attributes"]["credit_card_number"]).to eq(@transaction3.credit_card_number)
+    expect(results["data"][1]["attributes"]["result"]).to eq(@transaction3.result)
+  end
 end
