@@ -70,4 +70,28 @@ RSpec.describe 'item single finder', type: :request do
     expect(results["data"]["attributes"]["unit_price"]).to eq("1.23")
     expect(results["data"]["attributes"]["merchant_id"]).to eq(@item.merchant_id)
   end
+
+  it "finds an item by created_at" do
+    get "/api/v1/items/find?created_at=#{@item.created_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@item.id}")
+    expect(results["data"]["attributes"]["description"]).to eq(@item.description)
+    expect(results["data"]["attributes"]["unit_price"]).to eq("1.23")
+    expect(results["data"]["attributes"]["merchant_id"]).to eq(@item.merchant_id)
+  end
+
+  it "finds an item by updated_at" do
+    get "/api/v1/items/find?updated_at=#{@item.updated_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@item.id}")
+    expect(results["data"]["attributes"]["description"]).to eq(@item.description)
+    expect(results["data"]["attributes"]["unit_price"]).to eq("1.23")
+    expect(results["data"]["attributes"]["merchant_id"]).to eq(@item.merchant_id)
+  end
 end
