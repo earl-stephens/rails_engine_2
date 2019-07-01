@@ -32,4 +32,17 @@ RSpec.describe 'invoice item single finder', type: :request do
     expect(results["data"]["attributes"]["item_id"]).to eq(@ii1.item_id)
     expect(results["data"]["attributes"]["invoice_id"]).to eq(@ii1.invoice_id)
   end
+
+  it "finds invoice item by item_id" do
+    get "/api/v1/invoice_items/find?item_id=#{@ii1.item_id}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@ii1.id}")
+    expect(results["data"]["attributes"]["quantity"]).to eq(@ii1.quantity)
+    expect(results["data"]["attributes"]["unit_price"]).to eq("2.23")
+    expect(results["data"]["attributes"]["item_id"]).to eq(@ii1.item_id)
+    expect(results["data"]["attributes"]["invoice_id"]).to eq(@ii1.invoice_id)
+  end
 end
