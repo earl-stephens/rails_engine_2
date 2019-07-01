@@ -37,4 +37,16 @@ RSpec.describe 'transaction single finders', type: :request do
     expect(results["data"]["attributes"]["credit_card_number"]).to eq(@transaction1.credit_card_number)
     expect(results["data"]["attributes"]["result"]).to eq(@transaction1.result)
   end
+
+  it "finds transaction by credit_card_number" do
+    get "/api/v1/transactions/find?credit_card_number=#{@transaction1.credit_card_number}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"]["id"]).to eq("#{@transaction1.id}")
+    expect(results["data"]["attributes"]["invoice_id"]).to eq(@transaction1.invoice_id)
+    expect(results["data"]["attributes"]["credit_card_number"]).to eq(@transaction1.credit_card_number)
+    expect(results["data"]["attributes"]["result"]).to eq(@transaction1.result)
+  end
 end
