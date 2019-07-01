@@ -90,4 +90,17 @@ RSpec.describe 'invoice multi finders', type: :request do
     expect(results["data"][0]["attributes"]["customer_id"]).to eq(@invoice1.customer_id)
     expect(results["data"][1]["attributes"]["merchant_id"]).to eq(@invoice2.merchant_id)
   end
+
+  it "finds invoices by updated_at" do
+    get "/api/v1/invoices/find_all?updated_at=#{@invoice3.updated_at}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(1)
+    expect(results["data"][0]["id"]).to eq("#{@invoice3.id}")
+    expect(results["data"][0]["attributes"]["status"]).to eq(@invoice3.status)
+    expect(results["data"][0]["attributes"]["customer_id"]).to eq(@invoice3.customer_id)
+    expect(results["data"][0]["attributes"]["merchant_id"]).to eq(@invoice3.merchant_id)
+  end
 end
