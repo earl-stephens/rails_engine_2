@@ -1,4 +1,4 @@
- require 'csv'
+require 'csv'
 namespace :import do
   desc "import sales engine data from CSV"
   task sales_engine: :environment do
