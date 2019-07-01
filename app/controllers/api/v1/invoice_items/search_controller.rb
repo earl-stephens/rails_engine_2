@@ -6,9 +6,9 @@ module Api
         def index
           if invoice_item_params[:unit_price]
             formatted_price = invoice_item_params[:unit_price].gsub('.', '')
-            render json: InvoiceItemSerializer.new(InvoiceItem.where(unit_price: formatted_price))
+            render json: InvoiceItemSerializer.new(InvoiceItem.order(:id).where(unit_price: formatted_price))
           else
-            render json: InvoiceItemSerializer.new(InvoiceItem.where(invoice_item_params))
+            render json: InvoiceItemSerializer.new(InvoiceItem.order(:id).where(invoice_item_params))
           end
         end
 

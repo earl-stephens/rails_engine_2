@@ -4,7 +4,7 @@ module Api
       class SearchController < ApplicationController
 
         def index
-          render json: TransactionSerializer.new(Transaction.where(transaction_params))
+          render json: TransactionSerializer.new(Transaction.order(:id).where(transaction_params))
         end
 
         def show
