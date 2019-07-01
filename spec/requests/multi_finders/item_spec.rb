@@ -47,4 +47,17 @@ RSpec.describe 'item multi finders', type: :request do
     expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.34")
     expect(results["data"][1]["attributes"]["merchant_id"]).to eq(@item2.merchant_id)
   end
+
+  it "finds items by description" do
+    get "/api/v1/items/find_all?description=#{@item2.description}"
+
+    results = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(results["data"].count).to eq(2)
+    expect(results["data"][0]["id"]).to eq("#{@item2.id}")
+    expect(results["data"][0]["attributes"]["description"]).to eq(@item2.description)
+    expect(results["data"][1]["attributes"]["unit_price"]).to eq("2.34")
+    expect(results["data"][1]["attributes"]["merchant_id"]).to eq(@item3.merchant_id)
+  end
 end
